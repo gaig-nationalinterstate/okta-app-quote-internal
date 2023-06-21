@@ -8,7 +8,7 @@ resource "okta_app_oauth" "quote" {
   issuer_mode                = "CUSTOM_URL"
   label                      = "GCAT Quote"
   login_mode                 = "DISABLED"
-  login_uri                  = "https://${var.env}quote.natl.com/CommercialLines/Account/Login" # Pointing to tstaura59 etc..
+  login_uri                  = "https://${var.env}quote.natl.com/CommercialLines/Account/Login" #Currently Pointing to tstaura59, etc. internally. Is this correct?
   pkce_required              = "false"
   post_logout_redirect_uris  = ["https://${var.env}quote.natl.com/CommercialLines/Account/PostLogout"]
   redirect_uris              = ["https://${var.env}quote.natl.com/CommercialLines/authorization-code/callback"]
