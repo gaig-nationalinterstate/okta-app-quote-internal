@@ -1,6 +1,6 @@
 # Authorization Server
 resource "okta_auth_server" "quote-auth-server" {
-  audiences                 = ["https://${var.url}.natl.com"]
+  audiences                 = ["https://${var.audience}"]
   credentials_rotation_mode = "AUTO"
   description               = "Quote Auth Server - ${var.env}"
   issuer_mode               = "CUSTOM_URL"

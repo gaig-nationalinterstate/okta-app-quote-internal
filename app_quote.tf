@@ -6,12 +6,12 @@ resource "okta_app_oauth" "quote" {
   hide_web                   = "true"
   implicit_assignment        = "false"
   issuer_mode                = "CUSTOM_URL"
-  label                      = "Quote Commercial Lines"
+  label                      = "Quote Commercial Lines - ${var.env}"
   login_mode                 = "DISABLED"
-  login_uri                  = "https://${var.url}.natl.com/CommercialLines/Account/Login" #Currently Pointing to tstaura59, etc. internally. Is this correct?
+  login_uri                  = "https://${var.uri}/Account/Login" #Currently Pointing to tstaura59, etc. internally. Is this correct?
   pkce_required              = "false"
-  post_logout_redirect_uris  = ["https://${var.url}.natl.com/CommercialLines/Account/PostLogout"]
-  redirect_uris              = ["https://${var.url}.natl.com/CommercialLines/authorization-code/callback"]
+  post_logout_redirect_uris  = ["https://${var.uri}/Account/PostLogout"]
+  redirect_uris              = ["https://${var.uri}/authorization-code/callback"]
   refresh_token_leeway       = "30"
   refresh_token_rotation     = "ROTATE"
   response_types             = ["code", "id_token", "token"]
