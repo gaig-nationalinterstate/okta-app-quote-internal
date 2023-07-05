@@ -1,34 +1,34 @@
 # Groups
 resource "okta_group" "Quote_Underwriters" {
-  name = "Quote_Underwriters_${var.env}"
+  name = var.env == "prd" ? "Quote_Underwriters" : "Quote_Underwriters_${var.env}"
 }
 
 resource "okta_group" "Quote_Agents" {
-  name = "Quote_Agents_${var.env}"
+  name = var.env == "prd" ? "Quote_Agents" : "Quote_Agents_${var.env}"
 }
 
 resource "okta_group" "Agents" {
-  name = "Agents_${var.env}"
+  name = var.env == "prd" ? "Agents" : "Agents_${var.env}"
 }
 
 # Group Rules
 resource "okta_group_rule" "Quote-Agents-Provisioning-Rule" {
-  expression_value  = "user.userStatus==\"Approved\" and isMemberOfGroupName(\"Agents_${var.env}\")"
-  group_assignments = ["Quote_Agents_${var.env}"]
-  name              = "Quote Agents Provisioning Rule - ${var.env}"
+  expression_value  = var.env == "prd" ? "user.userStatus==\"Approved\" and isMemberOfGroupName(\"Agents\")" : "user.userStatus==\"Approved\" and isMemberOfGroupName(\"Agents_${var.env}\")"
+  group_assignments = var.env == "prd" ? ["Quote_Agents"] : ["Quote_Agents_${var.env}"]
+  name              = var.env == "prd" ? "Quote Agents Provisioning Rule" : "Quote Agents Provisioning Rule - ${var.env}"
   status            = "ACTIVE"
 }
 
 resource "okta_group_rule" "Quote-Underwriters-Provisioning-Rule" {
-  expression_value  = "isMemberOfAnyGroup(\"quote_underwriter_${var.env}\")"
-  group_assignments = ["Quote_Underwriters_${var.env}"]
-  name              = "Quote Underwriters Provisioning Rule - ${var.env}"
+  expression_value  = var.env == "prd" ? "isMemberOfAnyGroup(\"quote_underwriter\")" : "isMemberOfAnyGroup(\"quote_underwriter_${var.env}\")"
+  group_assignments = var.env == "prd" ? ["Quote_Underwriters_${var.env}"] : ["Quote_Underwriters_${var.env}"]
+  name              = var.env == "prd" ? "Quote Underwriters Provisioning Rule" : "Quote Underwriters Provisioning Rule - ${var.env}"
   status            = "ACTIVE"
 }
 
 resource "okta_group_rule" "Assign-External-Users-Group" {
-  expression_value  = "isMemberOfAnyGroup(\"Quote_Agents_${var.env}\")"
-  group_assignments = ["External_Users_${var.env}"]
-  name              = "Assign to External Users Group - ${var.env}"
+  expression_value  = var.env == "prd" ? "isMemberOfAnyGroup(\"Quote_Agents\")" : "isMemberOfAnyGroup(\"Quote_Agents_${var.env}\")"
+  group_assignments = var.env == "prd" ? ["External_Users"] : ["External_Users_${var.env}"]
+  name              = var.env == "prd" ? "Assign to External Users Group" : "Assign to External Users Group - ${var.env}"
   status            = "ACTIVE"
 }

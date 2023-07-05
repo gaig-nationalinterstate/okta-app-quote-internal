@@ -6,9 +6,9 @@ resource "okta_app_oauth" "quote" {
   hide_web                   = "true"
   implicit_assignment        = "false"
   issuer_mode                = "CUSTOM_URL"
-  label                      = "Quote Commercial Lines - ${var.env}"
+  label                      = var.env == "prd" ? "Quote Commercial Lines" : "Quote Commercial Lines ${var.env}"
   login_mode                 = "DISABLED"
-  login_uri                  = "https://${var.uri}/Account/Login" #Currently Pointing to tstaura59, etc. internally. Is this correct?
+  login_uri                  = "https://${var.uri}/Account/Login"
   pkce_required              = "false"
   post_logout_redirect_uris  = ["https://${var.uri}/Account/PostLogout"]
   redirect_uris              = ["https://${var.uri}/authorization-code/callback"]
@@ -37,4 +37,15 @@ resource "okta_app_group_assignment" "Quote_Underwriters" {
   app_id            = okta_app_oauth.quote.id
   group_id          = okta_group.Quote_Underwriters.id
   retain_assignment = true
+}
+
+# Bookmark
+resource "okta_app_bookmark" "commercial-lines" {
+  groups                     = var.env == "prd" ? ["Quote_Underwriters"] : ["Quote_Underwriters_${var.env}"]
+  hide_ios                   = "false"
+  hide_web                   = "false"
+  label                      = var.env == "prd" ? "Commercial Lines" : "Commercial Lines ${var.env}"
+  request_integration        = "false"
+  status                     = "ACTIVE"
+  url                        = "https://${var.uri}"
 }

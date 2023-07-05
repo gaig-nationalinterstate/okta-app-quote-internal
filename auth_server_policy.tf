@@ -12,7 +12,7 @@ resource "okta_auth_server_policy_rule" "quote-rule" {
   auth_server_id       = okta_auth_server.quote-auth-server.id
   policy_id            = okta_auth_server_policy.quote-policy.id
   status               = "ACTIVE"
-  name                 = "Quote Default Policy Rule - ${var.env}"
+  name                 = "Quote Default Policy Rule ${var.env}"
   priority             = 1
   group_whitelist      = ["EVERYONE"]
   grant_type_whitelist = ["authorization_code", "implicit"]

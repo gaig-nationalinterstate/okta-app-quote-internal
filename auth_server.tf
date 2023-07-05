@@ -2,9 +2,9 @@
 resource "okta_auth_server" "quote-auth-server" {
   audiences                 = ["https://${var.audience}"]
   credentials_rotation_mode = "AUTO"
-  description               = "Quote Auth Server - ${var.env}"
+  description               = "Quote Auth Server ${var.env}"
   issuer_mode               = "CUSTOM_URL"
-  name                      = "Quote Auth Server - ${var.env}"
+  name                      = "Quote Auth Server ${var.env}"
   status                    = "ACTIVE"
 }
 
