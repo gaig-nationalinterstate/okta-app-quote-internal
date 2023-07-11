@@ -2,9 +2,9 @@
 resource "okta_auth_server" "quote-auth-server" {
   audiences                 = ["https://${var.audience}"]
   credentials_rotation_mode = "AUTO"
-  description               = "Quote Auth Server ${var.env}"
-  issuer_mode               = "CUSTOM_URL"
-  name                      = "Quote Auth Server ${var.env}"
+  description               = var.env == "prd" ? "Pricing Application Authorization Server" : "Pricing Application Authorization Server ${var.env}"
+  issuer_mode               = "ORG_URL"
+  name                      = var.env == "prd" ? "Quote Authorization Server" : "Quote Authorization Server ${var.env}"
   status                    = "ACTIVE"
 }
 
@@ -14,7 +14,7 @@ resource "okta_auth_server_scope" "groups" {
   consent          = "IMPLICIT"
   default          = "false"
   description      = "Groups"
-  display_name     = "Groups"
+  display_name     = "groups"
   metadata_publish = "NO_CLIENTS"
   name             = "groups"
 }
@@ -74,9 +74,9 @@ resource "okta_auth_server_claim" "groups" {
   always_include_in_token = "true"
   auth_server_id          = okta_auth_server.quote-auth-server.id
   claim_type              = "IDENTITY"
-  group_filter_type       = "STARTS_WITH"
+  group_filter_type       = "REGEX"
   name                    = "groups"
   status                  = "ACTIVE"
-  value                   = "Quote"
+  value                   = ".*"
   value_type              = "GROUPS"
 }
