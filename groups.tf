@@ -51,8 +51,8 @@ resource "okta_group_rule" "Quote-Underwriters-Provisioning-Rule" {
     var.env == "prd" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_prd[0].id}\")" : (
       var.env == "dev" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : (
         var.env == "tst" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : (
-          var.env == "qa" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : (
-            var.env == "stg" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : ""
+          var.env == "qa" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_qa[0].id}\")" : (
+            var.env == "stg" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_qa[0].id}\")" : ""
           )
         )
       )
