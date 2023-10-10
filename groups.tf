@@ -7,13 +7,13 @@ data "okta_group" "quote_underwriter_prd" {
 
 # Currently used in dev and tst
 data "okta_group" "quote_underwriter_tst" {
-  count = var.env == "dev" || var.env == "tst" ? 1 : 0
+  count = var.env == "dev" || var.env == "tst" || var.env == "nonprd" ? 1 : 0
   name  = "quote_underwriter_tst"
 }
 
 # Currently used in qa and stg
 data "okta_group" "quote_underwriter_qa" {
-  count = var.env == "qa" || var.env == "stg" ? 1 : 0
+  count = var.env == "qa" || var.env == "stg" || var.env == "nonprd" ? 1 : 0
   name  = "quote_underwriter_qa"
 }
 
@@ -49,10 +49,12 @@ resource "okta_group_rule" "Quote-Agents-Provisioning-Rule" {
 resource "okta_group_rule" "Quote-Underwriters-Provisioning-Rule" {
   expression_value = (
     var.env == "prd" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_prd[0].id}\")" : (
-      var.env == "dev" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : (
-        var.env == "tst" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : (
-          var.env == "qa" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_qa[0].id}\")" : (
-            var.env == "stg" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_qa[0].id}\")" : ""
+      var.env == "nonprd" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : (
+        var.env == "dev" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : (
+          var.env == "tst" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_tst[0].id}\")" : (
+            var.env == "qa" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_qa[0].id}\")" : (
+              var.env == "stg" ? "isMemberOfAnyGroup(\"${data.okta_group.quote_underwriter_qa[0].id}\")" : ""
+            )
           )
         )
       )
